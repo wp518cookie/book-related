@@ -53,6 +53,7 @@ public class DepthFirstSearch {
             }
         }
         System.out.println();
+        System.out.println(search.count());
         if (search.count() != G.V()) {
             System.out.println("NOT connected");
         } else {
