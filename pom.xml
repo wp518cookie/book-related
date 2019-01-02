@@ -11,6 +11,8 @@
     <modules>
         <module>sword-to-offer</module>
         <module>algs4</module>
+        <module>personal-test</module>
+        <module>jdk-source</module>
     </modules>
 
     <build>

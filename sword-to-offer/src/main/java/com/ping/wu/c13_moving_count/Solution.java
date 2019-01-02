@@ -20,6 +20,7 @@ public class Solution {
 
             }
         }
+        return 0;
     }
 
     public static boolean check(int rowNum, int colNum, int threshold) {
@@ -34,5 +35,6 @@ public class Solution {
             colNum = colNum / 10;
 
         }
+        return true;
     }
 }
