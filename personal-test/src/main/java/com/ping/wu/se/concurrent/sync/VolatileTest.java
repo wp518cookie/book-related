@@ -1,9 +1,8 @@
-package com.ping.wu.concurrent.sync;
+package com.ping.wu.se.concurrent.sync;
 
 import org.apache.commons.lang3.RandomUtils;
 import sun.misc.Contended;
 
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
