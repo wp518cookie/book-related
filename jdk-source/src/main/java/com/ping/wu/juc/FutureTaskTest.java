@@ -23,6 +23,7 @@ public class FutureTaskTest {
         };
         java.util.concurrent.FutureTask<Integer> futureTask = new java.util.concurrent.FutureTask(callable);
         futureTask.run();
+        System.out.println("future 开始running!");
         System.out.println(futureTask.get());
     }
 }

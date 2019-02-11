@@ -22,7 +22,6 @@ public class UnsafeGenerator {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    unsafe = null;
                 }
             }
         }
