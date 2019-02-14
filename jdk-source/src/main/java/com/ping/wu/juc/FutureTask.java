@@ -60,7 +60,7 @@ public class FutureTask<V> implements RunnableFuture<V> {
 
     private volatile Thread runner;
 
-    private volatile WaitNode waitNode;
+    private volatile WaitNode waiters;
 
     public FutureTask(Callable<V> callable) {
         if (callable == null) {
@@ -152,7 +152,166 @@ public class FutureTask<V> implements RunnableFuture<V> {
 
     @Override
     public void run() {
+        if (state != NEW
+                || !UNSAFE.compareAndSwapObject(this, runnerOffset, null, Thread.currentThread())) {
+            return;
+        }
+        try {
+            Callable<V> c = callable;
+            if (c != null && state == NEW) {
+                V result;
+                boolean ran;
+                try {
+                    result = c.call();
+                    ran = true;
+                } catch (Throwable ex) {
+                    result = null;
+                    ran = false;
+                    setException(ex);
+                }
+                if (ran) {
+                    // 这里设置值的同时，会变更state
+                    set(result);
+                }
+            }
+        } finally {
+            runner = null;
+            int s = state;
+            if (s >= INTERRUPTING) {
+                handlePossibleCancellationInterrupt(s);
+            }
+        }
+    }
 
+    protected boolean runAndReset() {
+        if (state != NEW
+                || !UNSAFE.compareAndSwapObject(this, runnerOffset, null, Thread.currentThread())) {
+            return false;
+        }
+        boolean ran = false;
+        int s = state;
+        try {
+            Callable<V> c = callable;
+            if (c != null && s == NEW) {
+                try {
+                    c.call();
+                    ran = true;
+                } catch (Throwable ex) {
+                    setException(ex);
+                }
+            }
+        } finally {
+            runner = null;
+            s = state;
+            // 被中断了
+            if (s >= INTERRUPTING) {
+                handlePossibleCancellationInterrupt(s);
+            }
+        }
+        return ran && s == NEW;
+    }
+
+    private void handlePossibleCancellationInterrupt(int s) {
+        if (s == INTERRUPTING) {
+            while (state == INTERRUPTING) {
+                Thread.yield();
+            }
+        }
+    }
+
+    // 唤醒因为future.get()而等待的线程
+    private void finishCompletion() {
+        for (WaitNode q; (q = waiters) != null; ) {
+            if (UNSAFE.compareAndSwapObject(this, waitersOffset, q, null)) {
+                for (; ; ) {
+                    Thread t = q.thread;
+                    if (t != null) {
+                        q.thread = null;
+                        LockSupport.unpark(t);
+                    }
+                    WaitNode next = q.next;
+                    if (next == null) {
+                        break;
+                    }
+                    q.next = null;
+                    q = next;
+                }
+                break;
+            }
+        }
+        done();
+        callable = null;
+    }
+
+    private int awaitDone(boolean timed, long nanos)
+            throws InterruptedException {
+        final long deadline = timed ? System.nanoTime() + nanos : 0L;
+        WaitNode q = null;
+        boolean queued = false;
+        for (; ; ) {
+            if (Thread.interrupted()) {
+                removeWaiter(q);
+                throw new InterruptedException();
+            }
+            int s = state;
+            if (s > COMPLETING) {
+                if (q != null) {
+                    q.thread = null;
+                }
+                return s;
+                //正在完成过程中，让出cpu
+            } else if (s == COMPLETING) {
+                Thread.yield();
+            } else if (q == null) {
+                q = new WaitNode();
+            } else if (!queued) {
+                queued = UNSAFE.compareAndSwapObject(this, waitersOffset, q.next = waiters, q);
+            } else if (timed) {
+                nanos = deadline - System.nanoTime();
+                if (nanos <= 0L) {
+                    removeWaiter(q);
+                    return state;
+                }
+                LockSupport.parkNanos(this, nanos);
+            } else {
+                LockSupport.park(this);
+            }
+        }
+    }
+
+    private void removeWaiter(WaitNode node) {
+        if (node != null) {
+            // 判断是否需要移除的依据
+            node.thread = null;
+            retry:
+            for (; ; ) {
+                for (WaitNode pred = null, q = waiters, s; q != null; q = s) {
+                    s = q.next;
+                    if (q.thread != null) {
+                        pred = q;
+                    } else if (pred != null) {
+                        pred.next = s;
+                        if (pred.thread == null) {
+                            continue retry;
+                        }
+                    } else if (!UNSAFE.compareAndSwapObject(this, waitersOffset, q, s)) {
+                        continue retry;
+                    }
+                }
+                break;
+            }
+        }
+    }
+
+    private V report(int s) throws ExecutionException {
+        Object x = outcome;
+        if (s == NORMAL) {
+            return (V) x;
+        }
+        if (s >= CANCELLED) {
+            throw new CancellationException();
+        }
+        throw new ExecutionException((Throwable) x);
     }
 
     static final class WaitNode {

@@ -27,7 +27,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
     }
 
     /**
-     * todo 用法
+     *
      */
     @Override
     public Future<?> submit(Runnable task) {
@@ -77,10 +77,13 @@ public abstract class AbstractExecutorService implements ExecutorService {
             Iterator<? extends Callable<T>> it = tasks.iterator();
             futures.add(ecs.submit(it.next()));
             --ntasks;
+            //进行中的任务数量
             int active = 1;
             for (; ; ) {
                 Future<T> f = ecs.poll();
+                //没有已完成的任务
                 if (f == null) {
+                    //还有任务需要塞
                     if (ntasks > 0) {
                         --ntasks;
                         futures.add(ecs.submit(it.next()));
@@ -88,12 +91,14 @@ public abstract class AbstractExecutorService implements ExecutorService {
                     } else if (active == 0) {
                         break;
                     } else if (timed) {
+                        // 带超时的结果获取
                         f = ecs.poll(nanos, TimeUnit.NANOSECONDS);
                         if (f == null) {
                             throw new TimeoutException();
                         }
                         nanos = deadline - System.nanoTime();
                     } else {
+                        // 阻塞型的获取
                         f = ecs.take();
                     }
                 }
@@ -113,6 +118,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
             }
             throw ee;
         } finally {
+            // 最后取消所有任务
             for (int i = 0, size = futures.size(); i < size; i++) {
                 futures.get(i).cancel(true);
             }

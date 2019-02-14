@@ -14,6 +14,7 @@
         <module>personal-test</module>
         <module>jdk-source</module>
         <module>jvm-learning</module>
+        <module>data-structures</module>
     </modules>
 
     <build>
