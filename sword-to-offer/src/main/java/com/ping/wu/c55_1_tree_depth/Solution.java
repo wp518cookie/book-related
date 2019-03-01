@@ -1,4 +1,4 @@
-package com.ping.wu.c55_tree_depth;
+package com.ping.wu.c55_1_tree_depth;
 
 /**
  * @author wuping
