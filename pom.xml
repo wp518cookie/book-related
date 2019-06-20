@@ -16,6 +16,9 @@
         <module>jvm-learning</module>
         <module>data-structures</module>
         <module>algo</module>
+        <module>netty-learning</module>
+        <module>dubbo-learning</module>
+        <module>guava-study</module>
     </modules>
 
     <build>
@@ -42,6 +45,11 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0.1-jre</version>
         </dependency>
     </dependencies>
 </project>

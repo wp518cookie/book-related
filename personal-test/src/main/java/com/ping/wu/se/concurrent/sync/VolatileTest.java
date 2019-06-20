@@ -13,40 +13,13 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class VolatileTest {
-    @Contended
-    private volatile int value = 0;
-    @Contended
-    private int value2 = 0;
+     private static volatile int a;
 
-    private Object o = new Object();
-
-    public void test() {
-        int random = RandomUtils.nextInt();
-        if (random != 2) {
-            synchronized (o) {
-                if (random != 2) {
-                    value++;
-                    value2++;
-//                    countDownLatch.countDown();
-                }
-            }
-        }
-        if (value != value2) {
-            System.out.println("error : value " + value + " , value2 : " + value2);
-        }
+    public static void main(String[] args) {
+        test(a);
     }
 
-    public static void main(String[] args) throws Exception {
-        VolatileTest test = new VolatileTest();
+    public static void test(int a) {
 
-        ExecutorService pool = Executors.newFixedThreadPool(100);
-        int num = 100000;
-//        CountDownLatch countDownLatch = new CountDownLatch(num);
-        for (int i = 0; i < num; i++) {
-            pool.submit(()-> test.test());
-        }
-        TimeUnit.SECONDS.sleep(3);
-        System.out.println("value : " + test.value);
-        System.out.println("value2 : " + test.value2);
     }
 }

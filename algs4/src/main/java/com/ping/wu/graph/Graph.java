@@ -1,29 +1,21 @@
 package com.ping.wu.graph;
 
+import com.ping.wu.common.In;
+
+import java.util.NoSuchElementException;
+import java.util.Stack;
+
 /**
  * @author wuping
- * @date 2018/12/19
+ * @date 2019-06-20
  */
 
 public class Graph {
     private static final String NEWLINE = System.getProperty("line.separator");
-    //顶点数目
-    private final int V;
-    //边的数目
-    private int E;
-    private Bag<Integer>[] adj;
 
-    public Graph(int V) {
-        if (V < 0) {
-            throw new IllegalArgumentException("Number of vertices must be nonnegative");
-        }
-        this.V = V;
-        this.E = 0;
-        adj = (Bag<Integer>[]) new Bag[V];
-        for (int v = 0; v < V; v++) {
-            adj[v] = new Bag();
-        }
-    }
+    private final int V;    // number of vertices
+    private int E;          // number of edges
+    private Bag<Integer>[] adj; // adjaceny list
 
     public int V() {
         return V;
@@ -33,9 +25,61 @@ public class Graph {
         return E;
     }
 
+    public Graph(int V) {
+        if (V < 0) {
+            throw new IllegalArgumentException("Number of verices must be nonnegative");
+        }
+        this.V = V;
+        this.E = 0;
+        adj = (Bag<Integer>[]) new Bag[V];
+        for (int v = 0; v < V; v++) {
+            adj[v] = new Bag();
+        }
+    }
+
+    public Graph(In in) {
+        try {
+            this.V = in.readInt();
+            if (V < 0) {
+                throw new IllegalArgumentException();
+            }
+            adj = new Bag[V];
+            for (int v = 0; v < V; v++) {
+                adj[v] = new Bag();
+            }
+            int E = in.readInt();
+            if (E < 0) {
+                throw new IllegalArgumentException();
+            }
+            for (int i = 0; i < E; i++) {
+                int v = in.readInt();
+                int w = in.readInt();
+                validateVertex(v);
+                validateVertex(w);
+                addEdge(v, w);
+            }
+        } catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("invalid input format in Graph constructor", e);
+        }
+    }
+
+    public Graph(Graph G) {
+        this(G.V());
+        this.E = G.E();
+        for (int v = 0; v < G.V(); v++) {
+            Stack<Integer> reverse = new Stack();
+            for (int w : G.adj[v]) {
+                reverse.push(w);
+            }
+            for (int w : reverse) {
+                adj[v].add(w);
+            }
+        }
+    }
+
     private void validateVertex(int v) {
         if (v < 0 || v >= V) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("vertex " + v + " is not between 0 and " + (V - 1));
         }
     }
 
@@ -70,6 +114,4 @@ public class Graph {
         }
         return s.toString();
     }
-
-
 }

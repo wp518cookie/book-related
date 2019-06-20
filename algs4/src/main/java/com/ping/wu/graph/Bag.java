@@ -5,17 +5,12 @@ import java.util.NoSuchElementException;
 
 /**
  * @author wuping
- * @date 2018/12/19
+ * @date 2019-06-20
  */
 
 public class Bag<Item> implements Iterable<Item> {
     private Node<Item> first;
     private int n;
-
-    private static class Node<Item> {
-        private Item item;
-        private Node<Item> next;
-    }
 
     public Bag() {
         first = null;
@@ -31,10 +26,10 @@ public class Bag<Item> implements Iterable<Item> {
     }
 
     public void add(Item item) {
-        Node<Item> oldfirst = first;
+        Node<Item> oldFirst = first;
         first = new Node<Item>();
         first.item = item;
-        first.next = oldfirst;
+        first.next = oldFirst;
         n++;
     }
 
@@ -69,5 +64,10 @@ public class Bag<Item> implements Iterable<Item> {
             current = current.next;
             return item;
         }
+    }
+
+    private static class Node<Item> {
+        private Item item;
+        private Node<Item> next;
     }
 }

@@ -1,6 +1,8 @@
 package com.ping.wu.juc;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -25,5 +27,9 @@ public class FutureTaskTest {
         futureTask.run();
         System.out.println("future 开始running!");
         System.out.println(futureTask.get());
+        ExecutorService service = Executors.newFixedThreadPool(1);
+        service.submit(() -> {
+             return "hello world";
+        });
     }
 }
