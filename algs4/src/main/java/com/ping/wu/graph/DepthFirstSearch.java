@@ -9,7 +9,13 @@ import com.ping.wu.common.StdOut;
  */
 
 public class DepthFirstSearch {
+    /**
+     * marked[v] = is there an s-v path
+     */
     private boolean[] marked;
+    /**
+     * number of vertices connected to s
+     */
     private int count;
 
     public DepthFirstSearch(Graph G, int s) {
