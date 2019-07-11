@@ -1,4 +1,4 @@
-package com.ping.wu.graph;
+package com.ping.wu.graph.c4_1;
 
 /**
  * @author wuping

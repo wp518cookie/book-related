@@ -1,8 +1,6 @@
-package com.ping.wu.graph;
+package com.ping.wu.graph.c4_1;
 
 import com.ping.wu.common.In;
-
-import java.util.Iterator;
 
 /**
  * @author wuping

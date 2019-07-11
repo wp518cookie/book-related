@@ -1,4 +1,4 @@
-package com.ping.wu.graph;
+package com.ping.wu.graph.c4_1;
 
 import java.util.Stack;
 
@@ -47,8 +47,6 @@ public class DepthFirstPaths {
         pathStack.push(s);
         return pathStack;
     }
-
-
 
     private void validateVertex(int v) {
         int V = marked.length;

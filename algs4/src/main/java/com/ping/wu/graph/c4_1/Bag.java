@@ -1,4 +1,4 @@
-package com.ping.wu.graph;
+package com.ping.wu.graph.c4_1;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

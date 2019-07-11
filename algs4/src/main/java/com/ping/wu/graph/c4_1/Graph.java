@@ -1,4 +1,4 @@
-package com.ping.wu.graph;
+package com.ping.wu.graph.c4_1;
 
 import com.ping.wu.common.In;
 
@@ -15,7 +15,7 @@ public class Graph {
 
     private final int V;    // number of vertices
     private int E;          // number of edges
-    private Bag<Integer>[] adj; // adjaceny list
+    private Bag<Integer>[] adj; // adjacent list
 
     public int V() {
         return V;
