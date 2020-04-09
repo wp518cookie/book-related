@@ -7,6 +7,7 @@ import com.ping.wu.common.StdOut;
 /**
  * @author wuping
  * @date 2019-06-24
+ * connected components
  */
 
 public class CC {
