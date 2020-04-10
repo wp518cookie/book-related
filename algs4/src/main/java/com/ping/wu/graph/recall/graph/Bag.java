@@ -27,6 +27,7 @@ public class Bag<T> implements Iterable<T> {
         first = newFirst;
         newFirst.val = item;
         newFirst.next = oldFirst;
+        n++;
     }
 
     @Override
@@ -51,7 +52,9 @@ public class Bag<T> implements Iterable<T> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            return current.val;
+            Node<T> temp = current;
+            current = current.next;
+            return temp.val;
         }
     }
 }

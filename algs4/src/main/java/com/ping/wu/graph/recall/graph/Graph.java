@@ -16,6 +16,14 @@ public class Graph {
     private int E;
     private Bag<Integer>[] adj;
 
+    public Graph(int v) {
+        this.V = v;
+        adj = new Bag[v];
+        for (int i = 0; i < v; i++) {
+            adj[i] = new Bag();
+        }
+    }
+
     public Graph(In in) {
         try {
             this.V = in.readInt();
@@ -40,6 +48,7 @@ public class Graph {
     public void addEdge(int v, int w) {
         adj[v].add(w);
         adj[w].add(v);
+        E++;
     }
 
     public int degree(int v) {

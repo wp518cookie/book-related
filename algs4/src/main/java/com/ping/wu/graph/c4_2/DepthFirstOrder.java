@@ -1,5 +1,7 @@
 package com.ping.wu.graph.c4_2;
 
+import com.ping.wu.common.In;
+import com.ping.wu.common.PrintUtils;
 import com.ping.wu.common.Queue;
 import com.ping.wu.graph.c4_4.DirectedEdge;
 import com.ping.wu.graph.c4_4.EdgeWeightedDigraph;
@@ -103,5 +105,11 @@ public class DepthFirstOrder {
         return true;
     }
 
-
+    public static void main(String[] args) {
+        In in = new In("/Users/wp/Documents/code/self/study/fighting/algs4/src/main/java/com/ping/wu/graph/recall/digraph/txt/depthFirstOrder.txt");
+        DepthFirstOrder order = new DepthFirstOrder(new Digraph(in));
+        PrintUtils.print(order.pre());
+        System.out.println();
+        PrintUtils.print(order.post());
+    }
 }
