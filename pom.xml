@@ -25,6 +25,9 @@
         <module>diamond-learning</module>
         <module>drools-study</module>
         <module>java8-in-action</module>
+        <module>intro-to-algo</module>
+        <module>rocketmq-learning</module>
+        <module>jraft</module>
     </modules>
 
     <parent>

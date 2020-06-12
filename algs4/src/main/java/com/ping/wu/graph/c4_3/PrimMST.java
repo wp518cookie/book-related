@@ -1,6 +1,8 @@
 package com.ping.wu.graph.c4_3;
 
+import com.ping.wu.common.In;
 import com.ping.wu.common.Queue;
+import com.ping.wu.common.StdOut;
 import com.ping.wu.common.UF;
 import com.ping.wu.sorting.IndexMinPQ;
 
@@ -145,5 +147,15 @@ public class PrimMST {
         }
 
         return true;
+    }
+
+    public static void main(String[] args) {
+        In in = new In("/Users/wp/Documents/code/self/study/fighting/algs4/src/main/java/com/ping/wu/graph/recall/ewg/txt/mediumEWG.txt");
+        EdgeWeightedGraph G = new EdgeWeightedGraph(in);
+        PrimMST mst = new PrimMST(G);
+        for (Edge e : mst.edges()) {
+            StdOut.println(e);
+        }
+        StdOut.printf("%.5f\n", mst.weight());
     }
 }
