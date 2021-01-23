@@ -28,6 +28,12 @@
         <module>intro-to-algo</module>
         <module>rocketmq-learning</module>
         <module>jraft</module>
+        <module>spring-learning</module>
+        <module>hystrix</module>
+        <module>sentinel</module>
+        <module>redis-study</module>
+        <module>refactor</module>
+        <module>art-of-design</module>
     </modules>
 
     <parent>
@@ -97,5 +103,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.10</version>
         </dependency>
+
     </dependencies>
 </project>

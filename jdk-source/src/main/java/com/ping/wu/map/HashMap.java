@@ -1,5 +1,6 @@
 //package com.ping.wu.map;
 //
+//import javax.swing.tree.TreeNode;
 //import java.io.Serializable;
 //import java.util.Map;
 //import java.util.Objects;
@@ -44,6 +45,59 @@
 //        return putVal(hash(key), key, value, false, true);
 //    }
 //
+//    final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
+//        Node<K, V>[] tab;
+//        Node<K, V> p;
+//        int n, i;
+//        if ((tab = table) == null || (n = tab.length) == 0) {
+//            n = (tab = resize()).length;
+//        }
+//        // todo
+//    }
+//
+//    final Node<K, V>[] resize() {
+//        Node<K, V>[] oldTab = table;
+//        int oldCap = (oldTab == null) ? 0 : oldTab.length;
+//        int oldThr = threshold;
+//        int newCap, newThr = 0;
+//        if (oldCap > 0) {
+//            if (oldCap >= MAXIMUM_CAPACITY) {
+//                threshold = Integer.MAX_VALUE;
+//                return oldTab;
+//            } else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
+//                    oldCap >= DEFAULT_INITIAL_CAPACITY) {
+//                newThr = oldThr << 1;
+//            }
+//        } else if (oldThr > 0) {
+//            newCap = oldThr;
+//        } else {
+//            newCap = DEFAULT_INITIAL_CAPACITY;
+//            newThr = (int) (DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+//        }
+//        if (newThr == 0) {
+//            float ft = (float) newCap * loadFactor;
+//            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float) MAXIMUM_CAPACITY ? (int) ft : Integer.MAX_VALUE);
+//        }
+//        threshold = newThr;
+//        Node<K, V>[] newTab = (Node<K, V>[]) new Node[newCap];
+//        table = newTab;
+//        if (oldTab != null) {
+//            for (int j = 0; j < oldCap; j++) {
+//                Node<K, V> e;
+//                if ((e = oldTab[j]) != null) {
+//                    oldTab[j] = null;
+//                    if (e.next == null) {
+//                        newTab[e.hash & (newCap - 1)] = e;
+//                    } else if (e instanceof TreeNode) {
+//                        // todo
+//                        ((TreeNode<K, V>)e).split(this, newTab, j, oldCap);
+//                    } else {
+//                        Node<K, V> loHead
+//                    }
+//                }
+//            }
+//        }
+//    }
 //
 //    //是低位高位都能参与作用
 //    static final int hash(Object key) {
